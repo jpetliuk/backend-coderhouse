@@ -243,4 +243,5 @@ async function runInterface() {
   await interface();
 }
 
+//--------- Comentar para usar sin la interfaz ---------
 runInterface();
