@@ -146,91 +146,120 @@ const rl = readline.createInterface({
 const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
 
 const interface = async () => {
+  const space = console.log(" ");
+  let id;
+
   try {
     let opperation = null;
     let pause = false;
+
     while (opperation !== "exit") {
       clear();
+
       console.log('<type "help" to see all comands>');
       console.log('<commands: "new" "id" "all" "delete" "update">');
       console.log(" ");
+
       opperation = await prompt("What's your next opperation?: ");
 
-      if (opperation === "help") {
-        clear();
-        console.log('type "new" to add a new product.');
-        console.log('type "all" to see all products.');
-        console.log('type "id" to search a product by its id.');
-        console.log('type "remove" to add a new product.');
-        console.log('type "update" to add a new product.');
-        console.log('type "exit" to exit.');
-        console.log(" ");
+      switch (opperation) {
+        case "help":
+          clear();
 
-        pause = await prompt("press enter to continue");
-      }
+          console.log('type "new" to add a new product.');
+          console.log('type "all" to see all products.');
+          console.log('type "id" to search a product by its id.');
+          console.log('type "remove" to add a new product.');
+          console.log('type "update" to add a new product.');
+          console.log('type "exit" to exit.');
+          space;
 
-      if (opperation === "new") {
-        clear();
-        let title = await prompt("product title: ");
-        let description = await prompt("product description: ");
-        let price = await prompt("product price (number): ");
-        let thumbnail = await prompt("product thumbnail: ");
-        let code = await prompt("product code: ");
-        let stock = await prompt("product stock (number): ");
+          pause = await prompt("press enter to continue");
+          break;
 
-        console.log(" ");
+        //--- new ---
+        case "new":
+          clear();
 
-        await Manager.addProduct(
-          title,
-          description,
-          ~~price,
-          thumbnail,
-          code,
-          ~~stock
-        );
+          let title = await prompt("product title: ");
+          let description = await prompt("product description: ");
+          let price = await prompt("product price (number): ");
+          let thumbnail = await prompt("product thumbnail: ");
+          let code = await prompt("product code: ");
+          let stock = await prompt("product stock (number): ");
 
-        console.log(" ");
-        pause = await prompt("press enter to continue");
-      }
+          space;
+          await Manager.addProduct(
+            title,
+            description,
+            ~~price,
+            thumbnail,
+            code,
+            ~~stock
+          );
+          space;
 
-      if (opperation === "all") {
-        clear();
-        console.log(" ");
-        await Manager.getProducts();
-        console.log(" ");
-        pause = await prompt("press enter to continue");
-      }
+          pause = await prompt("press enter to continue");
+          break;
 
-      if (opperation === "id") {
-        clear();
-        let id = await prompt("id of the product you search: ");
-        console.log(" ");
-        await Manager.getProductByID(~~id);
-        console.log(" ");
-        pause = await prompt("press enter to continue");
-      }
+        //--- all ---
+        case "all":
+          clear();
 
-      if (opperation === "delete") {
-        clear();
-        let id = await prompt("id of the product you want to delete: ");
-        console.log(" ");
-        await Manager.deleteProduct(~~id);
-        console.log(" ");
-        pause = await prompt("press enter to continue");
-      }
+          space;
+          await Manager.getProducts();
+          space;
 
-      if (opperation === "update") {
-        clear();
-        let id = await prompt("id of the product: ");
-        console.log(" ");
-        await Manager.getProductByID(~~id);
-        console.log(" ");
-        let toChange = await prompt("property you want to change: ");
-        let info = await prompt("new contect: ");
-        console.log(" ");
-        await Manager.updateProduct(~~id, toChange, info);
-        console.log(" ");
-        pause = await prompt("press enter to continue");
+          pause = await prompt("press enter to continue");
+          break;
+
+        //--- byID ---
+        case "id":
+          clear();
+
+          id = await prompt("id of the product you search: ");
+
+          space;
+          await Manager.getProductByID(~~id);
+          space;
+
+          pause = await prompt("press enter to continue");
+          break;
+
+        //--- delete ---
+        case "delete":
+          clear();
+          id = await prompt("id of the product you want to delete: ");
+
+          space;
+          await Manager.deleteProduct(~~id);
+          space;
+
+          pause = await prompt("press enter to continue");
+          break;
+
+        //--- update ---
+        case "update":
+          clear();
+
+          id = await prompt("id of the product: ");
+
+          space;
+          await Manager.getProductByID(~~id);
+          space;
+
+          let toChange = await prompt("property you want to change: ");
+          let info = await prompt("new contect: ");
+
+          space;
+          await Manager.updateProduct(~~id, toChange, info);
+          space;
+
+          pause = await prompt("press enter to continue");
+          break;
+
+        default:
+          break;
       }
     }
 
